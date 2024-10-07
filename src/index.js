@@ -31,6 +31,7 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
+import SystemCheck from "./component/SystemCheck";
 
 const Index = () => {
   const {
@@ -134,6 +135,10 @@ const routeConfig = createBrowserRouter([
       {
         path: "/testenv/:id",
         element: <TestEnv />,
+      },
+      {
+        path: "/systemcheck/:id",
+        element: <SystemCheck />,
       },
       {
         path: "/getdata/:id",

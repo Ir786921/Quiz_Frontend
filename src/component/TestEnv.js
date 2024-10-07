@@ -5,13 +5,12 @@ import alltestContext from "../utils/Context";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Store from "../Redux/reduxStore";
+import Detection from "./Detection";
 import UserResponseSlice, { addResponse } from "../Redux/UserResponseSlice";
 import { useDispatch, useSelector } from "react-redux";
 import CountdownTimer from "./Timer";
-import * as faceapi from "face-api.js";
-import FaceDetectionComponent from "./WebCamMonitoring";
-// import CameraProctoringWithOpenCV from "./WebCamMonitoring";
-// import video1 from "../assests/1017 (1) (online-video-cutter.com).mp4"
+
+
 
 const TestEnv = () => {
   const { newInst, newDuration, newTitle, ALLTEST } =
@@ -86,62 +85,62 @@ const TestEnv = () => {
   //   videoRef.current && loadModals();
   // },[])
 
-  useEffect(() => {
-    const loadModels = async () => {
-      // Load face-api.js models
-      await Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri("..Public/models"),
-        faceapi.nets.faceLandmark68Net.loadFromUri("..Public/models"),
-        faceapi.nets.faceRecognitionNet.loadFromUri("..Public/models"),
-        faceapi.nets.faceExpressionNet.loadFromUri("..Public/models"),
-      ]);
-      startRecognition();
-    };
+  // useEffect(() => {
+  //   const loadModels = async () => {
+  //     // Load face-api.js models
+  //     await Promise.all([
+  //       faceapi.nets.tinyFaceDetector.loadFromUri("..Public/models"),
+  //       faceapi.nets.faceLandmark68Net.loadFromUri("..Public/models"),
+  //       faceapi.nets.faceRecognitionNet.loadFromUri("..Public/models"),
+  //       faceapi.nets.faceExpressionNet.loadFromUri("..Public/models"),
+  //     ]);
+  //     startRecognition();
+  //   };
 
-    const startRecognition = () => {
-      navigator.mediaDevices
-        .getUserMedia({ video: {} })
-        .then((stream) => {
-          videoRef.current.srcObject = stream;
-        })
-        .catch((err) => console.error(err));
+  //   const startRecognition = () => {
+  //     navigator.mediaDevices
+  //       .getUserMedia({ video: {} })
+  //       .then((stream) => {
+  //         videoRef.current.srcObject = stream;
+  //       })
+  //       .catch((err) => console.error(err));
 
-      videoRef.current.addEventListener("play", () => {
-        const canvas = faceapi.createCanvasFromMedia(videoRef.current);
-        document.body.append(canvas);
-        const displaySize = {
-          width: videoRef.current.width,
-          height: videoRef.current.height,
-        };
-        faceapi.matchDimensions(canvas, displaySize);
+  //     videoRef.current.addEventListener("play", () => {
+  //       const canvas = faceapi.createCanvasFromMedia(videoRef.current);
+  //       document.body.append(canvas);
+  //       const displaySize = {
+  //         width: videoRef.current.width,
+  //         height: videoRef.current.height,
+  //       };
+  //       faceapi.matchDimensions(canvas, displaySize);
 
-        setInterval(async () => {
-          const detections = await faceapi
-            .detectAllFaces(
-              videoRef.current,
-              new faceapi.TinyFaceDetectorOptions()
-            )
-            .withFaceLandmarks()
-            .withFaceDescriptors()
-            .withFaceExpressions();
-          const resizedDetections = faceapi.resizeResults(
-            detections,
-            displaySize
-          );
-          canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-          faceapi.draw.drawDetections(canvas, resizedDetections);
-          faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-          faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
-        }, 100);
-      });
-    };
+  //       setInterval(async () => {
+  //         const detections = await faceapi
+  //           .detectAllFaces(
+  //             videoRef.current,
+  //             new faceapi.TinyFaceDetectorOptions()
+  //           )
+  //           .withFaceLandmarks()
+  //           .withFaceDescriptors()
+  //           .withFaceExpressions();
+  //         const resizedDetections = faceapi.resizeResults(
+  //           detections,
+  //           displaySize
+  //         );
+  //         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+  //         faceapi.draw.drawDetections(canvas, resizedDetections);
+  //         faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+  //         faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+  //       }, 100);
+  //     });
+  //   };
 
-    loadModels();
+  //   loadModels();
 
-    return () => {
-      // Cleanup code if needed
-    };
-  }, []);
+  //   return () => {
+  //     // Cleanup code if needed
+  //   };
+  // }, []);
 
   // const startRecognition = () => {
   //   navigator.mediaDevices.getUserMedia({ video: {} })
@@ -208,37 +207,37 @@ const TestEnv = () => {
   function clearResponse() {}
 
   var i = 1;
-  useEffect(() => {
-    getapi();
-  }, []);
+  // useEffect(() => {
+  //   getapi();
+  // }, []);
 
   // useEffect(() => {
   //  postData();
   // }, [path]);
 
-  async function postData() {
-    try {
-      const { markForReview, selectedAnswer, status, QuestionNo } =
-        UserResponse;
-      const response = await fetch("http://localhost:8000/quiz/useranswer", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          markForReview: markForReview,
-          selectedAnswer: selectedAnswer,
-          status: status,
-          QuestionNo: QuestionNo,
-        }),
-      });
+  // async function postData() {
+  //   try {
+  //     const { markForReview, selectedAnswer, status, QuestionNo } =
+  //       UserResponse;
+  //     const response = await fetch("http://localhost:8000/quiz/useranswer", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         markForReview: markForReview,
+  //         selectedAnswer: selectedAnswer,
+  //         status: status,
+  //         QuestionNo: QuestionNo,
+  //       }),
+  //     });
 
-      const result = await response.json();
-      setData(result);
-    } catch (error) {
-      console.error("Error sending data:", error);
-    }
-  }
+  //     const result = await response.json();
+  //     setData(result);
+  //   } catch (error) {
+  //     console.error("Error sending data:", error);
+  //   }
+  // }
 
   const date = new Date();
   const Hour = date.getHours();
@@ -406,18 +405,43 @@ const TestEnv = () => {
           </div>
         </div>
         <div className="col-md-3">
-          <div className=" tw-flex tw-justify-end">
+
+        <div className="">
+             <Detection/>
+          </div>
+         
+         <div className=" tw-flex tw-flex-col tw-justify-center tw-gap-3">
+         <div className=" tw-flex tw-justify-start tw-items-center">
+              {" "}
+              <h3>User Name</h3>
+            </div>
+
+            <div className="  tw-flex tw-justify-center tw-items-center tw-p-2 tw-bg-gray-200 tw-rounded-md">
+              <h4 className=" tw-text-center tw-m-auto">
+                {" "}
+                <CountdownTimer targetTime={targetTime} />
+              </h4>
+            </div>
+
+            <div className=" tw-flex tw-justify-center">
+            <button className=" tw-bg-green-500 tw-px-6 tw-py-[5px] tw-border-0 tw-text-xl tw-shadow-lg tw-rounded-md">
+              End Test
+            </button>
+          </div>
+         </div>
+          
+
+          {/* <div className=" tw-flex tw-justify-end">
             <button className=" tw-bg-green-500 tw-px-6 tw-py-[5px] tw-border-0 tw-text-xl tw-shadow-lg tw-rounded-md">
               End Test
             </button>
           </div>
           <hr />
 
-          <div>
-            {/* <video src={video1} width={100} height={50}></video> */}
-            {/* <FaceDetectionComponent/> */}
+          <div className="">
+          <div className=" tw-flex tw-justify-center tw-items-center">
+             <Detection/>
           </div>
-          <div className=" tw-flex tw-gap-5 tw-bg-sky-100 tw-p-2">
             <div className=" tw-bg-gray-300 tw-rounded-full tw-border tw-border-black tw-border-solid tw-w-[50px] tw-h-[50px] tw-flex tw-justify-center tw-items-center">
               <h3 className=" tw-text-gray-500 tw-m-auto">I</h3>
             </div>
@@ -440,22 +464,10 @@ const TestEnv = () => {
           </div>
 
           <hr />
-          <div>
-            <video
-              src=""
-              autoPlay
-              crossOrigin="anonymous"
-              ref={videoRef}
-            ></video>
-          </div>
-          <canvas
-            className=" tw-bg-slate-400"
-            width={250}
-            height={120}
-            ref={canvasRef}
-          ></canvas>
+          
+          
 
-          <br />
+          <br /> */}
         </div>
       </div>
     </div>
