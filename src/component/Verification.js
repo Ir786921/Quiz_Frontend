@@ -91,7 +91,7 @@ const Verification = () => {
         </div>
         <br />
         <div className="col-md-6 tw-flex tw-justify-center tw-items-center tw-flex-col tw-gap-3 p-0 m-0">
-          <div className=" tw-w-full tw-p-2 tw-shadow-md tw-rounded-md border border-success">
+          {/* <div className=" tw-w-full tw-p-2 tw-shadow-md tw-rounded-md border border-success">
             <p className=" tw-text-lg">
               {" "}
               1) Position your face within the camera frame
@@ -102,6 +102,12 @@ const Verification = () => {
             <p className="tw-text-lg">
               3) Sit in clear and Noiseless Background
             </p>
+          </div> */}
+
+          <div className=" tw-flex tw-justify-between tw-gap-4">
+            <div><img src="" alt="" /></div>
+            <div><img src="" alt="" /></div>
+            <div><img src="" alt="" /></div>
           </div>
 
           <div className=" border border-success tw-mt-[100] tw-rounded-md sm:tw-w-[401] tw-w-96 tw-shadow-md border border-success">
