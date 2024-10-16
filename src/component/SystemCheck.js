@@ -1,18 +1,17 @@
-import React, { useState,useEffect, useRef } from 'react';
-import DetectRTC from 'detectrtc';
-import swal from 'sweetalert';
-import {  useLocation, useNavigate, useParams } from 'react-router-dom';
-import ConnectionSpeed from '../assests/ConnectionSpeed';
+import React, { useState, useEffect, useRef } from "react";
+import DetectRTC from "detectrtc";
+import swal from "sweetalert";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import ConnectionSpeed from "../assests/ConnectionSpeed";
 
-
-const SystemCheck = () =>{
+const SystemCheck = () => {
   const [buttonViewDisabled, setButtonViewDisabled] = useState(true);
   const [isAllowed, setIsAllowed] = useState(false);
   const [stream, setStream] = useState(null);
   const history = useNavigate();
   const path = useLocation().pathname;
   const videoRef = useRef(null);
-  
+
   const { id } = useParams();
 
   const [downloadSpeed, setDownloadSpeed] = useState(0);
@@ -22,19 +21,21 @@ const SystemCheck = () =>{
       const connection = navigator.connection;
       if (connection) {
         setDownloadSpeed(connection.downlink);
-        
       }
     };
 
     handleConnectionChange(); // Initial check
 
     if (navigator.connection) {
-      navigator.connection.addEventListener('change', handleConnectionChange);
+      navigator.connection.addEventListener("change", handleConnectionChange);
     }
 
     return () => {
       if (navigator.connection) {
-        navigator.connection.removeEventListener('change', handleConnectionChange);
+        navigator.connection.removeEventListener(
+          "change",
+          handleConnectionChange
+        );
       }
     };
   }, []);
@@ -49,9 +50,6 @@ const SystemCheck = () =>{
   //   sessionStorage.setItem("netspeed", speed);
   // };
 
-  
-  
-
   // Validate System Compatibility
   const ValidateCheck = () => {
     let allow = false;
@@ -59,14 +57,17 @@ const SystemCheck = () =>{
     // Network Check
     const netSpeedVar = sessionStorage.getItem("netspeed");
     console.log(netSpeedVar);
-    
+
     if (netSpeedVar > 2) {
       allow = true;
     }
 
     // Browser Check
     const browserCheck = (name, version) => {
-      if (DetectRTC.browser.name === name && DetectRTC.browser.version > version) {
+      if (
+        DetectRTC.browser.name === name &&
+        DetectRTC.browser.version > version
+      ) {
         allow = true;
       } else {
         swal("Please Update Browser or Try a Different Browser");
@@ -96,7 +97,7 @@ const SystemCheck = () =>{
         break;
     }
 
-   // Camera Permission
+    // Camera Permission
     // DetectRTC.load(() => {
     //   if (!DetectRTC.hasWebcam) {
     //     navigator.mediaDevices.getUserMedia({ video: true })
@@ -109,20 +110,10 @@ const SystemCheck = () =>{
     //   }
     // });
 
-  
-
-  
- 
-
-
-
     if (DetectRTC.hasWebcam) {
       allow = true;
+    } else {
     }
-    else{
-     
-    }
-
 
     // Final Approval
     setIsAllowed(allow && DetectRTC.hasWebcam);
@@ -132,7 +123,9 @@ const SystemCheck = () =>{
   useEffect(() => {
     const getMediaStream = async () => {
       try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
         if (videoRef.current) {
           videoRef.current.srcObject = stream; // Assign the stream to the video element
         }
@@ -146,7 +139,7 @@ const SystemCheck = () =>{
   }, []);
 
   useEffect(() => {
-     ValidateCheck();
+    ValidateCheck();
   }, []);
 
   const handleClick = () => {
@@ -166,72 +159,107 @@ const SystemCheck = () =>{
       elem.msRequestFullscreen();
       history(`/testenv/:${id}`);
     }
-}
+  };
 
-return (
-  <body class="App-header">
-  <div class="main">
-    <p class="sign" align="center">System Compatibility Check</p>
-    <table align="center">
-      <tbody><tr>
-        <td class="text-center">
-          <div>
-            <img src="" id="classIcon" />
+  return (
+    <>
+      <div className="container">
+        <div className="row tw-p-2">
+          <h1 className=" text-center tw-p-2 tw-text-xl">
+            System Compatibility Check
+          </h1>
+          <br />
+          <div className="col-12 tw-p-2">
+          <div className=" tw-w-1/2 tw-m-auto tw-flex tw-flex-wrap tw-gap-6 tw-justify-center">
+          <div className=" tw-p-3 tw-rounded-md tw-flex tw-flex-col tw-gap-6 tw-outline tw-outline-sky-400">
+              <p className=" tw-text-center tw-flex tw-justify-between "><span>Browser</span><span><i className="fa-brands fa-chrome"></i></span> </p>
+              <p>Name and Version</p>
+              <p>Status</p>
+            </div>
+            <div className=" tw-p-3 tw-rounded-md tw-flex tw-flex-col tw-gap-6 tw-outline tw-outline-sky-400">
+            <p className=" tw-text-center tw-flex tw-justify-between "><span>Internet</span><span><i className="fa-solid fa-wifi"></i></span> </p>
+              <p>Name and Version</p>
+              <p>Status</p>
+            </div>
+            <div className=" tw-p-3 tw-rounded-md tw-flex tw-flex-col tw-gap-6 tw-outline tw-outline-sky-400">
+            <p className=" tw-text-center tw-flex tw-justify-between "><span>Microphone</span><span><i className="fa-solid fa-microphone"></i></span> </p>
+              <p>Name and Version</p>
+              <p>Status</p>
+            </div>
+            <div className=" tw-p-3 tw-rounded-md tw-flex tw-flex-col tw-gap-6 tw-outline tw-outline-sky-400">
+            <p className=" tw-text-center tw-flex tw-justify-between "><span>Camera</span><span><i className="fa-solid fa-camera"></i></span> </p>
+              <p>Name and Version</p>
+              <p>Status</p>
+            </div>
+            <div className=" tw-p-3 tw-rounded-md tw-flex tw-flex-col tw-gap-6 tw-outline tw-outline-sky-400">
+            <p className=" tw-text-center tw-flex tw-justify-between "><span>OS</span><span><i className="fa-brands fa-windows"></i></span> </p>
+              <p>Name and Version</p>
+              <p>Status</p>
+            </div>
           </div>
-        </td>
-        <td>
-          <ul>
-            <li class="test">
-              <span ><b>OS:</b>  {"- " + JSON.stringify(DetectRTC.osName, null, 2).slice(1, -1) + " " + JSON.stringify(DetectRTC.osVersion, null, 0).slice(1, -1)} </span>
-            </li>
-            <li class="test">
-              <span><b>Browser:</b> {"- " + JSON.stringify(DetectRTC.browser.name).slice(1, -1) + " " + JSON.stringify(DetectRTC.browser.version)} </span>
-            </li>
-            <li class="test">
-              <span><b>Internet Speed:</b> {"- " + sessionStorage.getItem("netspeed") + " mbps"} </span>
-            </li>
-            <li class="test">
-              <span><b>Webcam:</b> {"- " + JSON.stringify(DetectRTC.hasWebcam)} </span>
-            </li>
-          </ul>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+         <div className=" tw-flex tw-justify-center tw-mt-10"> <button className=" tw-px-6 tw-py-2 tw-text-center tw-rounded-md ">Next</button></div>
+          </div>
+        </div>
+      </div>
+    </>
+    //   <body className="App-header">
+    //   <div claclassNamess="main">
+    //     <p className="sign" align="center">System Compatibility Check</p>
+    //     <table align="center">
+    //       <tbody><tr>
+    //         <td className="text-center">
+    //           <div>
+    //             <img src="" id="classIcon" />
+    //           </div>
+    //         </td>
+    //         <td>
+    //           <ul>
+    //             <li className="test">
+    //               <span ><b>OS:</b>  {"- " + JSON.stringify(DetectRTC.osName, null, 2).slice(1, -1) + " " + JSON.stringify(DetectRTC.osVersion, null, 0).slice(1, -1)} </span>
+    //             </li>
+    //             <li class="test">
+    //               <span><b>Browser:</b> {"- " + JSON.stringify(DetectRTC.browser.name).slice(1, -1) + " " + JSON.stringify(DetectRTC.browser.version)} </span>
+    //             </li>
+    //             <li class="test">
+    //               <span><b>Internet Speed:</b> {"- " + sessionStorage.getItem("netspeed") + " mbps"} </span>
+    //             </li>
+    //             <li class="test">
+    //               <span><b>Webcam:</b> {"- " + JSON.stringify(DetectRTC.hasWebcam)} </span>
+    //             </li>
+    //           </ul>
+    //         </td>
+    //       </tr>
+    //       </tbody>
+    //     </table>
 
+    //     <center>
+    //       <button
 
-    <center>
-      <button
+    //         className="activateButton"
+    //         variant="contained"
+    //         color="secondary"
+    //         onClick={handleClick}>
+    //         Activate Your WebCam and Network Check
+    //         </button>
+    //          <br/>
+    //          <br/>
+    //     </center>
 
-        className="activateButton"
-        variant="contained"
-        color="secondary"
-        onClick={handleClick}>
-        Activate Your WebCam and Network Check
-        </button>
-         <br/>
-         <br/>
-    </center>
+    //     <center>
+    //       <button
+    //         size="large"
+    //         disabled={buttonViewDisabled}
+    //         variant='contained'
+    //         color = "primary"
+    //         onClick={openFullscreen}>
+    //         Next
+    //         </button>
+    //     </center>
 
-   
+    //   </div>
 
-    <center>
-      <button
-        size="large"
-        disabled={buttonViewDisabled}
-        variant='contained'
-        color = "primary"
-        onClick={openFullscreen}>
-        Next
-        </button>
-    </center>
-
-  </div>
-
-</body>
-  
-)
-
+    // </body>
+  );
 };
 
 export default SystemCheck;

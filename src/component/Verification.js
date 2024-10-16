@@ -34,12 +34,12 @@ const Verification = () => {
   return (
     <div className="container-fluid p-4">
       <div className="row p-0 m-0">
-        <div className="col-md-6 p-0 m-0 tw-flex tw-justify-center tw-items-center tw-flex-col">
-          <div className=" tw-w-full tw-flex tw-justify-start ">
+        <div className="col-md-6 p-0 m-0 tw-flex tw-justify-center tw-items-center tw-flex-col tw-relative tw-border-r-8 tw-bord  tw-border-blue-50">
+          {/* <div className=" tw-w-full tw-flex tw-justify-start ">
             {" "}
             <h1>Good, Luck!!</h1>
-          </div>
-          <img src={image1} alt="" className=" tw-w-2/3 tw-h-2/3" />
+          </div> */}
+          <img src={image1} alt="" className=" tw-w-2/3 tw-h-2/3 tw-absolute -tw-z-10"/>
 
           <div className=" sm:tw-w-1/2 tw-w-1/2 tw-flex tw-justify-center tw-items-center tw-gap-5 tw-flex-col tw-p-4 tw-rounded-md tw-shadow-xl sm:tw-ml-10 sm:tw-mt-[-180] border border-success tw-mt-[-50] tw-ml-10">
             <input
