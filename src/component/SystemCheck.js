@@ -163,7 +163,7 @@ const SystemCheck = () => {
 
   return (
     <>
-      <div className="container">
+      <div className="container-fluid tw-bg-[#34495e] tw-m-0">
         <div className="row tw-p-2">
           <h1 className=" text-center tw-p-2 tw-text-xl">
             System Compatibility Check
@@ -171,15 +171,18 @@ const SystemCheck = () => {
           <br />
           <div className="col-12 tw-p-2">
           <div className=" tw-w-1/2 tw-m-auto tw-flex tw-flex-wrap tw-gap-6 tw-justify-center">
-          <div className=" tw-p-3 tw-rounded-md tw-flex tw-flex-col tw-gap-6 tw-outline tw-outline-sky-400">
-              <p className=" tw-text-center tw-flex tw-justify-between "><span>Browser</span><span><i className="fa-brands fa-chrome"></i></span> </p>
-              <p>Name and Version</p>
-              <p>Status</p>
+          <div className=" tw-p-3 tw-rounded-md tw-flex tw-flex-col tw-gap-4 tw-outline tw-outline-sky-400 tw-shadow-md tw-bg-[#d7dbdd]">
+              <p className=" tw-text-center tw-flex tw-justify-between "><span>Browser</span><span><i className="fa-brands fa-chrome tw-text-[#a8a9ad]"></i></span> </p>
+              <span>Name  {"- " + JSON.stringify(DetectRTC.browser.name).slice(1, -1)}</span>
+              <span>Version {"- " + JSON.stringify(DetectRTC.browser.version)}</span>
+              <span>Status {"- " + "Compatible"} &nbsp; <i className="fa-solid fa-square-check tw-text-green-700"></i></span>
+
             </div>
-            <div className=" tw-p-3 tw-rounded-md tw-flex tw-flex-col tw-gap-6 tw-outline tw-outline-sky-400">
+            <div className=" tw-p-3 tw-rounded-md tw-flex tw-flex-col tw-gap-4 tw-outline tw-outline-sky-400 tw-bg-[#d7dbdd]">
             <p className=" tw-text-center tw-flex tw-justify-between "><span>Internet</span><span><i className="fa-solid fa-wifi"></i></span> </p>
-              <p>Name and Version</p>
-              <p>Status</p>
+              <span>Speed {"- " + sessionStorage.getItem("netspeed") + " mbps"}</span>
+              <span>Strength { + (sessionStorage.getItem("netspeed") > 2) ? "- Strong" : "- Weak" }</span>
+              <span>Status {"- " + "Compatible"} &nbsp; <i className="fa-solid fa-square-check tw-text-green-700"></i></span>
             </div>
             <div className=" tw-p-3 tw-rounded-md tw-flex tw-flex-col tw-gap-6 tw-outline tw-outline-sky-400">
             <p className=" tw-text-center tw-flex tw-justify-between "><span>Microphone</span><span><i className="fa-solid fa-microphone"></i></span> </p>
