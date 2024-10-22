@@ -7,7 +7,8 @@ import ConnectionSpeed from "../assests/ConnectionSpeed";
 const SystemCheck = () => {
   const [buttonViewDisabled, setButtonViewDisabled] = useState(true);
   const [isAllowed, setIsAllowed] = useState(false);
-  const [stream, setStream] = useState(null);
+  const [iscamAllowed, setIscamAllowed] = useState(null);
+ const [stream, setStream] = useState(null);
   const history = useNavigate();
   const path = useLocation().pathname;
   const videoRef = useRef(null);
@@ -42,13 +43,7 @@ const SystemCheck = () => {
 
   sessionStorage.setItem("netspeed", downloadSpeed);
 
-  // Network Speed Check
-  // const getNetworkDownloadSpeed =  () => {
-  //   const baseUrl = 'https://eu.httpbin.org/stream-bytes/500000';
-  //   const fileSizeInBytes = 500000;
-  //   const speed = setDownloadSpeed(baseUrl, fileSizeInBytes);
-  //   sessionStorage.setItem("netspeed", speed);
-  // };
+ 
 
   // Validate System Compatibility
   const ValidateCheck = () => {
@@ -56,8 +51,7 @@ const SystemCheck = () => {
 
     // Network Check
     const netSpeedVar = sessionStorage.getItem("netspeed");
-    console.log(netSpeedVar);
-
+   
     if (netSpeedVar > 2) {
       allow = true;
     }
@@ -97,46 +91,32 @@ const SystemCheck = () => {
         break;
     }
 
-    // Camera Permission
-    // DetectRTC.load(() => {
-    //   if (!DetectRTC.hasWebcam) {
-    //     navigator.mediaDevices.getUserMedia({ video: true })
-    //       .then((stream) => {
-    //         document.querySelector("#videoElement").srcObject = stream;
-    //       })
-    //       .catch(() => {
-    //         swal("Webcam Permission Denied");
-    //       });
-    //   }
-    // });
-
-    if (DetectRTC.hasWebcam) {
-      allow = true;
-    } else {
-    }
+  
 
     // Final Approval
-    setIsAllowed(allow && DetectRTC.hasWebcam);
-    setButtonViewDisabled(!(allow && DetectRTC.hasWebcam));
+   
   };
 
+  
   useEffect(() => {
-    const getMediaStream = async () => {
+    const getVideoStream = async () => {
       try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
+        const {stream} = navigator.mediaDevices.getUserMedia({ video: true });
+       stream.getTracks()
+.forEach(track => track.stop());
+        const media = await navigator.mediaDevices.getUserMedia({ video: true });
         if (videoRef.current) {
-          videoRef.current.srcObject = stream; // Assign the stream to the video element
+          videoRef.current.srcObject = media; // Assign stream to video element
         }
-        setStream(mediaStream);
-      } catch (error) {
-        swal("Webcam Permission Denied");
+      } catch (err) {
+        console.error("Error accessing webcam: ", err);
       }
     };
 
-    getMediaStream();
+    getVideoStream(); // Request webcam access when the component mounts
   }, []);
+
+  
 
   useEffect(() => {
     ValidateCheck();
@@ -194,12 +174,21 @@ const SystemCheck = () => {
               <p>Name and Version</p>
               <p>Status</p>
             </div>
-            <div className=" tw-p-3 tw-rounded-md tw-flex tw-flex-col tw-gap-6 tw-outline tw-outline-sky-400">
+            <div className=" tw-p-3 tw-rounded-md tw-flex tw-flex-col tw-gap-4 tw-outline tw-outline-sky-400 tw-bg-[#d7dbdd]">
             <p className=" tw-text-center tw-flex tw-justify-between "><span>OS</span><span><i className="fa-brands fa-windows"></i></span> </p>
-              <p>Name and Version</p>
-              <p>Status</p>
+              <span>Name {"- " + JSON.stringify(DetectRTC.osName, null, 2)}</span>
+              <span>Version {"- " + JSON.stringify(DetectRTC.osVersion, null, 0).slice(1, -1)} </span>
+              <span>Status {"- " + "Compatible"} &nbsp; <i className="fa-solid fa-square-check tw-text-green-700"></i></span>
+
             </div>
           </div>
+          {/* {iscamAllowed === null && (
+        <div>
+          <p>Click the button to allow webcam access.</p>
+          <button onClick={getMediaStream}>Allow Webcam Access</button>
+        </div>
+      )} */}
+          <video id="videoElement" src={stream} ref={videoRef} autoPlay playsInline width="600" height="400" > </video>
          <div className=" tw-flex tw-justify-center tw-mt-10"> <button className=" tw-px-6 tw-py-2 tw-text-center tw-rounded-md ">Next</button></div>
           </div>
         </div>
