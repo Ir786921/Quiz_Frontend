@@ -54,8 +54,11 @@ const Index = () => {
   const [newDuration, setNewDuration] = useState(duration);
   const [newInst, setNewInst] = useState(instruction);
 
-  const id = useLocation().pathname;
-  console.log(id);
+  const path = useLocation().pathname;
+  console.log(path.slice(0,8));
+  
+  
+  const { id } = useParams();
 
   return (
     <alltestContext.Provider
@@ -81,12 +84,15 @@ const Index = () => {
     >
       <Provider store={Store}>
         <div className="container-fluid tw-relative">
-          {id == "/Signup" ? (
+          {path == "/Signup" ? (
             <Signup />
           ) : (
-            <>
-              <Header />
-              <Outlet />
+            <>{
+              path.slice(0,8) == "/testenv" ? (<Outlet />) :( <><Header /> <Outlet /> </>)
+
+            }
+              
+              
             </>
           )}
         </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation, useParams, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useContext } from "react";
 import alltestContext from "../utils/Context";
 import { Link } from "react-router-dom";
@@ -46,6 +46,7 @@ const TestEnv = () => {
   var stringpath = `key${path}`;
   var j = 1;
 
+  const history = useNavigate();
   const [optionNo, setOptionNo] = useState("0");
 
   const [getanswer, setGetanswer] = useState(" ");
@@ -63,108 +64,9 @@ const TestEnv = () => {
     return ele.id == id;
   });
 
-  const dorecognition = async () => {
-    const recognistion = await faceapi.FaceRecognitionNet(
-      videoRef.current,
-      new faceapi.extendWithFaceDetection()
-    );
-    console.log(recognistion);
-  };
+  
 
-  // useEffect(()=>{
-  //   const loadModals = ()=>{
-  //     Promise.all([
-
-  //       faceapi.nets.tinyFaceDetector.loadFromUri('../public/models'),
-  //       faceapi.nets.faceLandmark68Net.loadFromUri('../public/models'),
-  //       faceapi.nets.faceRecognitionNet.loadFromUri('../public/models'),
-  //       faceapi.nets.faceExpressionNet.loadFromUri('../public/models')
-  //     ]).then(dorecognition).catch((e)=>console.log(e))
-  //   }
-
-  //   videoRef.current && loadModals();
-  // },[])
-
-  // useEffect(() => {
-  //   const loadModels = async () => {
-  //     // Load face-api.js models
-  //     await Promise.all([
-  //       faceapi.nets.tinyFaceDetector.loadFromUri("..Public/models"),
-  //       faceapi.nets.faceLandmark68Net.loadFromUri("..Public/models"),
-  //       faceapi.nets.faceRecognitionNet.loadFromUri("..Public/models"),
-  //       faceapi.nets.faceExpressionNet.loadFromUri("..Public/models"),
-  //     ]);
-  //     startRecognition();
-  //   };
-
-  //   const startRecognition = () => {
-  //     navigator.mediaDevices
-  //       .getUserMedia({ video: {} })
-  //       .then((stream) => {
-  //         videoRef.current.srcObject = stream;
-  //       })
-  //       .catch((err) => console.error(err));
-
-  //     videoRef.current.addEventListener("play", () => {
-  //       const canvas = faceapi.createCanvasFromMedia(videoRef.current);
-  //       document.body.append(canvas);
-  //       const displaySize = {
-  //         width: videoRef.current.width,
-  //         height: videoRef.current.height,
-  //       };
-  //       faceapi.matchDimensions(canvas, displaySize);
-
-  //       setInterval(async () => {
-  //         const detections = await faceapi
-  //           .detectAllFaces(
-  //             videoRef.current,
-  //             new faceapi.TinyFaceDetectorOptions()
-  //           )
-  //           .withFaceLandmarks()
-  //           .withFaceDescriptors()
-  //           .withFaceExpressions();
-  //         const resizedDetections = faceapi.resizeResults(
-  //           detections,
-  //           displaySize
-  //         );
-  //         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-  //         faceapi.draw.drawDetections(canvas, resizedDetections);
-  //         faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-  //         faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
-  //       }, 100);
-  //     });
-  //   };
-
-  //   loadModels();
-
-  //   return () => {
-  //     // Cleanup code if needed
-  //   };
-  // }, []);
-
-  // const startRecognition = () => {
-  //   navigator.mediaDevices.getUserMedia({ video: {} })
-  //     .then(stream => {
-  //       videoRef.current.srcObject = stream;
-  //     })
-  //     .catch(err => console.error(err));
-
-  //   videoRef.current.addEventListener('play', () => {
-  //     const canvas = faceapi.createCanvasFromMedia(videoRef.current);
-  //     document.body.append(canvas);
-  //     const displaySize = { width: videoRef.current.width, height: videoRef.current.height };
-  //     faceapi.matchDimensions(canvas, displaySize);
-
-  //     setInterval(async () => {
-  //       const detections = await faceapi.detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors().withFaceExpressions();
-  //       const resizedDetections = faceapi.resizeResults(detections, displaySize);
-  //       canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-  //       faceapi.draw.drawDetections(canvas, resizedDetections);
-  //       faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-  //       faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
-  //     }, 100);
-  //   });
-  // };
+  
 
   const sendToBackend = {
     QuestionNo: path,
@@ -172,12 +74,26 @@ const TestEnv = () => {
 
     status: userResponses.hasOwnProperty(path) ? " Answered" : "not Answered",
 
-    QuizCategory: FilteredObj[0].name,
+    QuizCategory: FilteredObj[0]?.name,
   };
 
   console.log(sendToBackend);
   console.log(userResponses.currentQuestions);
+  const openFullscreen = () => {
+    const elem = document.documentElement;
 
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+      history(`/testenv/${id}`);
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen();
+      history(`/testenv/${id}`);
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen();
+      history(`/testenv/${id}`);
+    }
+  };
+ 
   const clickHandle = (e, id) => {
     setClicked(true);
     setSearchParams({ v1: e.target.innerText });
@@ -204,12 +120,17 @@ const TestEnv = () => {
   const targetTime =
     new Date().getTime() + (((24 / 24) * (60 * 15)) / 60) * 60 * 1000;
 
-  function clearResponse() {}
+  function clearResponse() {
+   setUserResponses({});
+   const currentDiv = document.getElementById(`key${path}`);
+    currentDiv.style.backgroundColor = "#e5e7eb";
+  }
 
   var i = 1;
-  // useEffect(() => {
-  //   getapi();
-  // }, []);
+  useEffect(() => {
+    openFullscreen()
+    getapi();
+  }, []);
 
   // useEffect(() => {
   //  postData();
@@ -273,7 +194,7 @@ const TestEnv = () => {
     <div className="container-fluid  p-0">
       <div className="row">
         <h3 className="text-center p-2 tw-bg-fuchsia-200">
-          {FilteredObj[0].name}
+          {FilteredObj[0]?.name}
         </h3>
         <div className="col-md-3 tw-p-3">
           <h4>Question Platlee</h4>

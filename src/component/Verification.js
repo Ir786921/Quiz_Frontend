@@ -119,7 +119,7 @@ const Verification = () => {
           <br />
          
           <Link
-            to={`/systemcheck/${id}`}
+            to={`/systemcheck/:${id}`}
             className="tw-px-8 tw-py-2 tw-bg-green-500 tw-border-0 tw-rounded-md tw-shadow-md tw-no-underline tw-text-black"
           >
             Proceed to the test
