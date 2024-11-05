@@ -96,7 +96,7 @@ const Signup = () => {
   
 
   return (
-    <div className=" tw-h-[700] tw-flex tw-justify-center tw-items-center">
+    <div className=" tw-h-[700] tw-flex tw-justify-center tw-items-center tw-bg-[#D09683]">
       <div className="  tw-p-4 tw-bg-[#44AA97] tw-opacity-85 tw-rounded-md tw-shadow-md tw-w-[450px]">
         <form
           onSubmit={(e) => {

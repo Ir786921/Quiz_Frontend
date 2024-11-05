@@ -1,18 +1,22 @@
-import React from "react";
+import React, { lazy, Suspense, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {  signOut } from "firebase/auth";
 import { auth } from "../assests/firebaseConfig";
-
-
 import logo from "../assests/logo.png";
+import TestLib from "./TestLib";
+
+
 
 const Header = () => {
 const username = useSelector(Store => Store.User);
 const navigate = useNavigate();
-const UserDetails = useSelector(store => store.User)
-console.log(username);
 
+const [showComponent, setShowComponent] = useState(false);
+console.log(username);
+const handleClick = () => {
+  setShowComponent(true);
+};
 function HandleSignOut(){
 
 signOut(auth).then(() => {
@@ -23,7 +27,7 @@ signOut(auth).then(() => {
 }
 
   return (
-    <div class="navbar navbar-expand-lg navbar-light tw-bg-white tw-shadow-sm m-0 p-0 tw-fixed">
+    <nav class="navbar navbar-expand-lg navbar-light tw-bg-white tw-shadow-sm m-0 p-0 fixed-top tw-shadow-black/5 tw-z-50">
       <a className="navbar-brand" href="#Home">
         <img src={logo} alt="" className="tw-h-16 tw-w-16" />
         &nbsp;<h3 className=" tw-inline-block">Testify</h3>
@@ -41,9 +45,9 @@ signOut(auth).then(() => {
         <span className="navbar-toggler-icon tw-text-white"></span>
       </button>
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="navbar-nav m-auto">
+        <ul className="navbar-nav m-auto"> 
           <li class="nav-item active link tw-rounded-lg tw-text-xl p-1 hover:tw-bg-green-400">
-            <Link to="/" className="nav-link text-black" href="#Home">
+            <Link to="/" className="nav-link text-black">
               Home <span className="sr-only"></span>
             </Link>
           </li>
@@ -53,15 +57,14 @@ signOut(auth).then(() => {
             </Link>
           </li>
           <li className="nav-item active p-1 link tw-rounded-lg text-white hover:tw-bg-green-400 tw-text-xl">
-            <Link to="/test" className="nav-link text-black" href="#Internship">
-              Test Library <span className="sr-only"></span>
+            <Link to="/test" onClick={handleClick} className="nav-link text-black">
+            Test Library <span className="sr-only"></span>
             </Link>
           </li>
           <li className="nav-item active p-1 link tw-rounded-lg hover:tw-bg-green-400 tw-text-xl">
             <Link
               to="/Contact"
               className="nav-link text-black"
-              href="#Projects"
             >
               Contact <span className="sr-only"></span>
             </Link>
@@ -81,7 +84,7 @@ signOut(auth).then(() => {
         </ul>
       
       </div>
-    </div>
+    </nav>
   );
 };
 

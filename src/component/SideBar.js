@@ -96,7 +96,7 @@ const SideBar = () => {
           </p>
         </div>
         <hr />
-        <SideBarAccordions
+        {/* <SideBarAccordions
           heading={"Aptitude & Reasoning"}
           subpoints={{
             first: "Number System",
@@ -195,7 +195,7 @@ const SideBar = () => {
             });
           }}
           icon={"fa-children"}
-        />
+        /> */}
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./component/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,8 +13,9 @@ import {
 import Home from "./component/Home";
 import About from "./component/About";
 import Contact from "./component/Contact";
+import Footer from "./component/Footer";
 
-import TestLib from "./component/TestLib";
+
 import { useContext, useState } from "react";
 import alltestContext from "./utils/Context";
 import CreateTest from "./component/CreateTest";
@@ -32,6 +33,11 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import SystemCheck from "./component/SystemCheck";
+
+const TestLib = lazy(()=> import("./component/TestLib")
+
+)
+
 
 const Index = () => {
   const {
@@ -83,12 +89,12 @@ const Index = () => {
       }}
     >
       <Provider store={Store}>
-        <div className="container-fluid tw-relative">
+        <div className="">
           {path == "/Signup" ? (
             <Signup />
           ) : (
             <>{
-              path.slice(0,8) == "/testenv" ? (<Outlet />) :( <><Header /> <Outlet /> </>)
+              path.slice(0,8) == "/testenv" ? (<Outlet />) :( <><Header /> <Outlet />  <Footer/></>)
 
             }
               
@@ -120,7 +126,7 @@ const routeConfig = createBrowserRouter([
       },
       {
         path: "/test",
-        element: <TestLib />,
+        element: <Suspense> <TestLib /></Suspense> ,
       },
       {
         path: "/SignUp",
